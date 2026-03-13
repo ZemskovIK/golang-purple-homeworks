@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 const (
 	USDToEUR = 0.86
@@ -8,11 +11,23 @@ const (
 	EURToRUB = USDToRUB / USDToEUR
 )
 
+func getAmount() (float64, error) {
+	var value string
+	_, err := fmt.Scan(&value)
+	if err != nil {
+		return 0, err
+	}
+	amount, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return 0, err
+	}
+	return amount, nil
+}
+
 func readAmount() float64 {
-	var amount float64
 	for {
 		fmt.Print("Введите сумму: ")
-		_, err := fmt.Scan(&amount)
+		amount, err := getAmount()
 		if err != nil || amount <= 0 {
 			fmt.Println("Ошибка ввода. Попробуйте снова.")
 			continue
