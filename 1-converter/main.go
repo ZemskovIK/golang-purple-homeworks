@@ -39,17 +39,15 @@ func readAmount() float64 {
 func readCurrency(query string, exclude string) string {
 	var currency string
 	fmt.Println(query)
-	for {
-		if exclude == "" {
+		for {
+		switch exclude {
+		case "":
 			fmt.Println("Доступные валюты: USD EUR RUB")
-		}
-		if exclude == "USD" {
+		case "USD":
 			fmt.Println("Доступные валюты: EUR RUB")
-		}
-		if exclude == "EUR" {
+		case "EUR":
 			fmt.Println("Доступные валюты: USD RUB")
-		}
-		if exclude == "RUB" {
+		case "RUB":
 			fmt.Println("Доступные валюты: USD EUR")
 		}
 		fmt.Scan(&currency)
