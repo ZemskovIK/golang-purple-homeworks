@@ -11,6 +11,21 @@ const (
 	EURToRUB = USDToRUB / USDToEUR
 )
 
+var rates = map[string]map[string]float64{
+	"USD": {
+		"EUR": USDToEUR,
+		"RUB": USDToRUB,
+	},
+	"EUR": {
+		"USD": 1 / USDToEUR,
+		"RUB": EURToRUB,
+	},
+	"RUB": {
+		"USD": 1 / USDToRUB,
+		"EUR": 1 / EURToRUB,
+	},
+}
+
 func getAmount() (float64, error) {
 	var value string
 	_, err := fmt.Scan(&value)
@@ -39,7 +54,7 @@ func readAmount() float64 {
 func readCurrency(query string, exclude string) string {
 	var currency string
 	fmt.Println(query)
-		for {
+	for {
 		switch exclude {
 		case "":
 			fmt.Println("Доступные валюты: USD EUR RUB")
@@ -61,32 +76,9 @@ func readCurrency(query string, exclude string) string {
 }
 
 func convert(amount float64, fromCurrency string, toCurrency string) float64 {
-	switch fromCurrency {
-	case "USD":
-		switch toCurrency {
-		case "RUB":
-			return amount * USDToRUB
-		case "EUR":
-			return amount * USDToEUR
-		}
-	case "RUB":
-		switch toCurrency {
-		case "USD":
-			return amount / USDToRUB
-		case "EUR":
-			return amount / EURToRUB
-		}
-	case "EUR":
-		switch toCurrency {
-		case "RUB":
-			return amount * EURToRUB
-		case "USD":
-			return amount / USDToEUR
-		}
-	}
-	return 0
+	rate := rates[fromCurrency][toCurrency]
+	return amount * rate
 }
-
 
 func main() {
 	fmt.Println("Калькулятор валют")
